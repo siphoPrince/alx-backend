@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-""" inherits from BaseCaching"""
+"""LIFOCache that inherits from BaseCaching"""
 
 
 from base_caching import BaseCaching
 
 
-class FIFOCache(BaseCaching):
+class LIFOCache(BaseCaching):
     """
-    FIFOCache class that inherits from BaseCaching and implements a FIFO (First-In, First-Out) cache system.
+    LIFOCache class that inherits from BaseCaching and implements a LIFO (Last-In, First-Out) cache system.
 
     Args:
         BaseCaching (class): The parent class providing the `cache_data` dictionary and `MAX_ITEMS` constant.
@@ -15,13 +15,13 @@ class FIFOCache(BaseCaching):
 
     def __init__(self):
         """
-        Initializes the `FIFOCache` instance.
+        Initializes the `LIFOCache` instance.
         """
         super().__init__()  # Call the parent class constructor
 
     def put(self, key, item):
         """
-        Adds a key-value pair to the cache, following the FIFO (First-In, First-Out) strategy.
+        Adds a key-value pair to the cache, following the LIFO (Last-In, First-Out) strategy.
 
         Args:
             key (Any): The key to store the item under.
@@ -34,8 +34,9 @@ class FIFOCache(BaseCaching):
             return
 
         if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-            # FIFO eviction: remove the first item (oldest)
-            discarded_key, _ = self.cache_data.popitem()
+            # LIFO eviction: remove the most recently added item
+            discarded_key = list(self.cache_data.keys())[-1]
+            del self.cache_data[discarded_key]
             print("DISCARD: {}".format(discarded_key))
 
         self.cache_data[key] = item
