@@ -7,10 +7,12 @@ from base_caching import BaseCaching
 
 class LIFOCache(BaseCaching):
     """
-    LIFOCache class that inherits from BaseCaching and implements a LIFO (Last-In, First-Out) cache system.
+    LIFOCache class that inherits from BaseCaching and implements a
+    LIFO (Last-In, First-Out) cache system.
 
     Args:
-        BaseCaching (class): The parent class providing the `cache_data` dictionary and `MAX_ITEMS` constant.
+        BaseCaching (class): The parent class providing
+        the `cache_data` dictionary and `MAX_ITEMS` constant.
     """
 
     def __init__(self):
@@ -21,7 +23,8 @@ class LIFOCache(BaseCaching):
 
     def put(self, key, item):
         """
-        Adds a key-value pair to the cache, following the LIFO (Last-In, First-Out) strategy.
+        Adds a key-value pair to the cache, following
+        the LIFO (Last-In, First-Out) strategy.
 
         Args:
             key (Any): The key to store the item under.
