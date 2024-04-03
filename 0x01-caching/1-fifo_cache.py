@@ -2,52 +2,38 @@
 """ inherits from BaseCaching"""
 
 
-from base_caching import BaseCaching
+BaseCaching = __import__('base_caching').BaseCaching
 
 
 class FIFOCache(BaseCaching):
-    """
-    FIFOCache class that inherits from BaseCaching and implements a FIFO (First-In, First-Out) cache system.
-
-    Args:
-        BaseCaching (class): The parent class providing the `cache_data` dictionary and `MAX_ITEMS` constant.
-    """
+    """FIFO caching system"""
 
     def __init__(self):
-        """
-        Initializes the `FIFOCache` instance.
-        """
-        super().__init__()  # Call the parent class constructor
+        """Initialize"""
+        super().__init__()
 
     def put(self, key, item):
-        """
-        Adds a key-value pair to the cache, following the FIFO (First-In, First-Out) strategy.
-
-        Args:
-            key (Any): The key to store the item under.
-            item (Any): The value to associate with the key.
-
-        Raises:
-            TypeError: If either key or item is None.
-        """
+        """Add an item to the cache"""
         if key is None or item is None:
             return
 
         if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-            # FIFO eviction: remove the first item (oldest)
-            discarded_key, _ = self.cache_data.popitem()
-            print("DISCARD: {}".format(discarded_key))
+            # Discard the first item (FIFO)
+            discarded_key = next(iter(self.cache_data))
+            del self.cache_data[discarded_key]
+            print("DISCARD:", discarded_key)
 
+        # Add the new item
         self.cache_data[key] = item
 
     def get(self, key):
-        """
-        Retrieves the value associated with a key from the cache.
+        """Retrieve an item from cache"""
+        if key is None or key not in self.cache_data:
+            return None
 
-        Args:
-            key (Any): The key to look up.
+        return self.cache_data[key]
 
-        Returns:
-            Any: The value stored under the key, or None if not found.
-        """
-        return self.cache_data.get(key)
+    def print_cache(self):
+        """Print the cache"""
+        for key, value in self.cache_data.items():
+            print("{}: {}".format(key, value))
