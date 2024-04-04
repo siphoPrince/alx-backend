@@ -2,36 +2,28 @@
 """get_hyper method that takes the same arguments"""
 
 
+import csv
 import math
+from typing import List
+
 
 class Server:
-    def __init__(self):
-        # Initialize your server or any required attributes
-        pass
-
-    def get_page(self, page: int = 1, page_size: int = 10) -> list:
-        """
-        Simulates fetching a page of data from a server.
-        Returns a list of data items.
-        """
-        # Implement your logic to fetch the page data here
-        pass
-
+    """Server class to paginate a database of popular baby names."""
     def get_hyper(self, page: int = 1, page_size: int = 10) -> dict:
-        """
-        Returns a dictionary with hypermedia pagination information.
-        """
+        """Returns pagination metadata and the requested page of data."""
         data = self.get_page(page, page_size)
-        total_pages = math.ceil(len(data) / page_size)
 
-        next_page = page + 1 if page < total_pages else None
+        total_rows = len(self.dataset())
+        total_pages = math.ceil(total_rows / page_size)
+
         prev_page = page - 1 if page > 1 else None
+        next_page = page + 1 if page < total_pages else None
 
         return {
-            'page_size': len(data),
-            'page': page,
-            'data': data,
-            'next_page': next_page,
-            'prev_page': prev_page,
-            'total_pages': total_pages
+            "page_size": page_size,
+            "page": page,
+            "data": data,
+            "next_page": next_page,
+            "prev_page": prev_page,
+            "total_pages": total_pages,
         }
