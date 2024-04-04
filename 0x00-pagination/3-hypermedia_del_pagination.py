@@ -58,7 +58,8 @@ class Server:
         end_index = min(start_index + page_size, len(self.dataset()))
         next_index = end_index
 
-        data = [self.__indexed_dataset[i] for i in range(start_index,
+        data = [self.__indexed_dataset[i] for i in range(
+            start_index,
             end_index)]
 
         return {
