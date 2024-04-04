@@ -35,16 +35,16 @@ class Server:
         return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
-        """Retrieves a page of data with hypermedia information, considering potential deletions.
+        """Retrieves a page of data with hypermedia information, considering.
 
         Args:
-            index: The starting index for the requested page (optional, defaults to None).
+            index: The starting index for the requested page (optionalto None).
             page_size: The number of items per page (defaults to 10).
 
         Returns:
             A dictionary containing pagination metadata and data.
         """
-        assert index is None or (0 <= index < len(self.dataset())), "index must be within dataset bounds"
+        assert index is None or (0 <= index < len(self.dataset())), "datasets"
 
         self.indexed_dataset()
 
@@ -53,12 +53,13 @@ class Server:
         else:
             previous_page_size = page_size
             previous_end_index = index + previous_page_size
-            start_index = min(previous_end_index, len(self.dataset()))  # Clamp to dataset length
+            start_index = min(previous_end_index, len(self.dataset()))
 
         end_index = min(start_index + page_size, len(self.dataset()))
         next_index = end_index
 
-        data = [self.__indexed_dataset[i] for i in range(start_index, end_index)]
+        data = [self.__indexed_dataset[i] for i in range(start_index,
+            end_index)]
 
         return {
             "index": start_index,
