@@ -2,7 +2,7 @@
 """ inherits from BaseCaching"""
 
 
-from base_caching import BaseCaching
+BaseCaching = __import__('base_caching').BaseCaching
 
 
 class FIFOCache(BaseCaching):
@@ -15,39 +15,28 @@ class FIFOCache(BaseCaching):
 
     def __init__(self):
         """
-        Initializes the `FIFOCache` instance.
+        Initialize
         """
-        super().__init__()  # Call the parent class constructor
+        super().__init__()
 
     def put(self, key, item):
         """
-        Adds a key-value pair to the cache, following the FIFO (First-In, First-Out) strategy.
-
-        Args:
-            key (Any): The key to store the item under.
-            item (Any): The value to associate with the key.
-
-        Raises:
-            TypeError: If either key or item is None.
+        Must assign to the dictionary self.cache_data
+        the item value for the key.
         """
-        if key is None or item is None:
-            return
+        if key and item:
+            self.cache_data[key] = item
 
-        if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-            # FIFO eviction: remove the first item (oldest)
-            discarded_key, _ = self.cache_data.popitem()
-            print("DISCARD: {}".format(discarded_key))
-
-        self.cache_data[key] = item
+        if len(self.cache_data) > BaseCaching.MAX_ITEMS:
+            pop_off = sorted(self.cache_data)[0]
+            self.cache_data.pop(pop_off)
+            print('DISCARD: {}'.format(pop_off))
 
     def get(self, key):
         """
-        Retrieves the value associated with a key from the cache.
-
-        Args:
-            key (Any): The key to look up.
-
-        Returns:
-            Any: The value stored under the key, or None if not found.
+        Return value of cache_data linked to key
         """
-        return self.cache_data.get(key)
+        if key and key in self.cache_data:
+            return self.cache_data.get(key)
+        else:
+            return None
