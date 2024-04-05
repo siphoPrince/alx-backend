@@ -11,36 +11,35 @@ class LRUCache(BaseCaching):
     """
 
     def __init__(self):
-        """
-        Init
-        """
-        self.queued_item = deque()
-        self.lru_item = []
         super().__init__()
+        self.lru_queue = []
 
     def put(self, key, item):
-        """
-        print put
-        """
-        if key is not None and item is not None:
-            if key in self.cache_data:
-                self.cache_data[key] = item
-                self.lru_item.remove(key)
-            else:
-                if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-                    del self.cache_data[self.lru_item[0]]
-                    print("DISCARD:", self.lru_item[0])
-                    self.lru_item.pop(0)
-                self.cache_data[key] = item
-            self.lru_item.append(key)
+        if key is None or item is None:
+            return
+
+        # If cache is full, discard least recently used item
+        if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+            self.__evict_lru()
+
+        self.cache_data[key] = item
+        self.__update_lru(key)
 
     def get(self, key):
-        """
-        get cache_data
-        """
-        if key in self.cache_data:
-            self.lru_item.remove(key)
-            self.lru_item.append(key)
-            return self.cache_data.get(key)
-        else:
+        if key is None or key not in self.cache_data:
             return None
+
+        # Update LRU queue
+        self.__update_lru(key)
+        return self.cache_data[key]
+
+    def __update_lru(self, key):
+        if key in self.lru_queue:
+            self.lru_queue.remove(key)
+        self.lru_queue.append(key)
+
+    def __evict_lru(self):
+        if self.lru_queue:
+            lru_key = self.lru_queue.pop(0)
+            del self.cache_data[lru_key]
+            print("DISCARD:", lru_key)
