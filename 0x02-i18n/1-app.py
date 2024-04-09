@@ -1,21 +1,27 @@
+#!/usr/bin/env python3
+""" Store it in a module-level variable named babel"""
+
+
 from flask import Flask, render_template
 from flask.ext.babel import Babel,gettext
 
-# Create a configuration class
-class Config:
-  LANGUAGES = ["en", "fr"]  # Supported languages
-  BABEL_DEFAULT_LOCALE = "en"  # Default locale (English)
-  BABEL_DEFAULT_TIMEZONE = "UTC"  # Default timezone
 
-# Initialize Flask app and Babel object
+class Config:
+    """main class"""
+  LANGUAGES = ["en", "fr"]
+  BABEL_DEFAULT_LOCALE = "en"
+  BABEL_DEFAULT_TIMEZONE = "UTC"
+
 app = Flask(__name__)
-app.config.from_object(Config)  # Use Config class for configuration
+app.config.from_object(Config)
 babel = Babel(app)
+
 
 @app.route('/')
 def index():
-  welcome_message = gettext('Welcome to Holberton')  # Mark for translation
+  welcome_message = gettext('Welcome to Holberton')
   return render_template('index.html', welcome_message=welcome_message)
+
 
 if __name__ == '__main__':
   app.run(debug=True)
