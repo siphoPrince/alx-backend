@@ -1,11 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ babel.locale }}">
 <head>
-  <title>Welcome to Holberton</title>
-  {{ babel_init }}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ _('Welcome') }}</title>
 </head>
 <body>
-  <h1>{{ welcome_message }}</h1>
+    <h1>{{ _('Welcome to our website!') }}</h1>
+    <p>{{ _('This is a sample text for language translation.') }}</p>
+    <p>{{ _('We support English and French languages.') }}</p>
+    
+    <ul>
+        <li><a href="{{ url_for('change_lang', lang='en') }}">{{ _('English') }}</a></li>
+        <li><a href="{{ url_for('change_lang', lang='fr') }}">{{ _('French') }}</a></li>
+    </ul>
 </body>
 </html>
-
